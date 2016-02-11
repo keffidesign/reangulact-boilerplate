@@ -8,11 +8,13 @@ export default class StoragePlugin extends Plugin {
 
         const list = [
             {
-                id: '1'
+                id: '1',
+                name: 'Task #1'
             }
             ,
             {
-                id: '2'
+                id: '2',
+                name: 'Task #2'
             }
         ];
 

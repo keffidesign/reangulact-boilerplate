@@ -10,9 +10,22 @@ export default class LearningPlugin extends Plugin {
         return [
             {
                 id: 'learning',
+                isDefault: true,
                 component: LearningComponent
             }
         ]
+
+    }
+
+    onLearning_list() {
+
+        return this.event(`storage://list`).promiseAction();
+
+    }
+
+    onLearning_create({data}) {
+
+        return this.event(`storage://add`).withData(data).promiseAction();
 
     }
 

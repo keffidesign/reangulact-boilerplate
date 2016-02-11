@@ -1,14 +1,13 @@
-import BaseComponent from './BaseComponent.es6';
 import {Component} from 'react';
-import clone from 'clone';
 import {event} from 'applugins';
+import clone from 'clone';
 
 let COUNTER = 0;
 //import ErrorView from './ErrorView.jsx'
 //import LoadingIndicator from './LoadingIndicator.jsx'
 
 /**
- * The base for all data-driven components.
+ * The base for all components.
  */
 export default class DataDrivenComponent extends Component {
 
@@ -16,7 +15,7 @@ export default class DataDrivenComponent extends Component {
 
         super();
 
-        console.log('BaseComponent');
+        console.log('DataDrivenComponent');
 
         const _renderInternal = this.render;
 
@@ -24,17 +23,11 @@ export default class DataDrivenComponent extends Component {
 
             console.log('render');
 
-            console.log('renderInternal',_renderInternal.call(this));
+            console.log('renderInternal', _renderInternal.call(this));
 
             return this.prepareJsx(_renderInternal.call(this), this.state);
 
-        }
-
-        //this.state = {
-        //
-        //    data: [{id: '1'}, {id: '2'}]
-        //
-        //}
+        };
 
     }
 
@@ -52,12 +45,13 @@ export default class DataDrivenComponent extends Component {
 
         if (props.ngFor) {
 
-            const [scopeId, typeOf, dataId] = props.ngFor.split(' ');
+            let [scopeId, typeOf, dataId] = this.ngForDirective(props.ngFor);
 
+            scopeId = scopeId.substring(1);
 
+            //const [scopeId, typeOf, dataId] = props.ngFor.split(' ');
 
             const data = state[dataId];
-
 
             if (!data) return null;
 
@@ -83,14 +77,13 @@ export default class DataDrivenComponent extends Component {
 
         console.log('children', children);
 
-        return React.createElement(type, props, [].concat(...(children || []).map((c) => (!c || typeof c === 'string') ? c : this.prepareJsx(c, state))))
-
+        return React.createElement(type, props, [].concat(...(children || []).map((c) => c && (typeof c === 'string') ? this.resolvePlaceholders(c) : this.prepareJsx(c, state))))
 
     }
 
-
-
     resolveProps({props, children}, d, scopeId) {
+
+        console.log('resolveProps', props, children);
 
         Object.keys(props).forEach((p) => {
 
@@ -112,12 +105,7 @@ export default class DataDrivenComponent extends Component {
 
         if (children.length === 1 && typeof children[0] === 'string') {
 
-            if (children[0].startsWith(`${scopeId}.`)) {
-
-                children[0] = d[children[0].substring(scopeId.length + 1)];
-
-            }
-
+            children[0] = this.resolvePlaceholders(children[0]);
 
         } else {
 
@@ -125,6 +113,29 @@ export default class DataDrivenComponent extends Component {
 
         }
 
+    }
+
+    resolvePlaceholders(str) {
+
+        return str.replace(/#\[(\w|\.)+\]/g, p => {
+
+            return p
+                .substring(2, p.length - 1)
+                .split('.')
+                .reduce((link, p) => (link && link[p]) ? link[p] : this[p], this.state)
+
+        });
+
+    }
+
+    ngForDirective(value) {
+
+        /**
+         * Split by space
+         */
+        const tokens = value.match(/\S+/g);
+
+        return tokens;
 
     }
 
@@ -132,35 +143,35 @@ export default class DataDrivenComponent extends Component {
     //
     //    console.log('DataDrivenComponent', this);
 
-        //const p = this.props;
-        //const st = this.state;
-        //let data = st.data;
-        //
-        //if (st.error) {
-        //
-        //    return this.renderError(st.error);
-        //
-        //} else if (st.dataLoading) {
-        //
-        //    return this.renderDataLoading();
-        //
-        //} else if (!data || data.length === 0) {
-        //
-        //    return this.renderEmptyData();
-        //
-        //} else {
-        //
-        //    if (p.filter) {
-        //        data = data.filter(p.filter);
-        //    }
-        //
-        //    if (p.sort) {
-        //        data = data.sort(p.sort);
-        //    }
-        //
-        //    return this.renderWithData(data);
-        //
-        //}
+    //const p = this.props;
+    //const st = this.state;
+    //let data = st.data;
+    //
+    //if (st.error) {
+    //
+    //    return this.renderError(st.error);
+    //
+    //} else if (st.dataLoading) {
+    //
+    //    return this.renderDataLoading();
+    //
+    //} else if (!data || data.length === 0) {
+    //
+    //    return this.renderEmptyData();
+    //
+    //} else {
+    //
+    //    if (p.filter) {
+    //        data = data.filter(p.filter);
+    //    }
+    //
+    //    if (p.sort) {
+    //        data = data.sort(p.sort);
+    //    }
+    //
+    //    return this.renderWithData(data);
+    //
+    //}
 
     //}
     //
@@ -196,7 +207,7 @@ export default class DataDrivenComponent extends Component {
             })
         );
 
-        if (!this.props.dataPreventInitialLoad){
+        if (!this.props.dataPreventInitialLoad) {
 
             this.reloadData();
 
@@ -205,6 +216,7 @@ export default class DataDrivenComponent extends Component {
         //super.componentWillMount();
 
     }
+
     //
     setData(data, extraState) {
 
@@ -257,7 +269,6 @@ export default class DataDrivenComponent extends Component {
         return this.props.name || this._id;
     }
 
-
     /**
      * Gets string representation of component.
      */
@@ -275,7 +286,6 @@ export default class DataDrivenComponent extends Component {
 
     }
 
-
     callPropsHook(key, ...args) {
 
         const cb = this.props[key];
@@ -289,7 +299,6 @@ export default class DataDrivenComponent extends Component {
         return `C${COUNTER++}`;
 
     }
-
 
     /**
      * Adds event handlers with this ownership.

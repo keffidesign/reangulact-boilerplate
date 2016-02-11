@@ -1,17 +1,20 @@
-import {BaseComponent, List, Button} from '../ui';
+import {DataDrivenComponent, List, Button} from '../ui';
 
-export class LearningComponent extends BaseComponent {
+export class LearningComponent extends DataDrivenComponent {
 
     render() {
 
+        console.log('LearningComponent');
+
         return (
             <div>
-                <h1>Learning Component</h1>
+                <h1>Tasks</h1>
                 <List
-                    dataFrom='storage://list'
+                    dataFrom='learning://list'
                 />
                 <Button
-                    caption='Add new'
+                    caption='New'
+                    onClick='@create'
                 />
             </div>
         )
