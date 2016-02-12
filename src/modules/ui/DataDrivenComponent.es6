@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import {event} from 'applugins';
-import clone from 'clone';
+//import clone from 'clone';
 
 let COUNTER = 0;
 //import ErrorView from './ErrorView.jsx'
@@ -31,13 +31,15 @@ export default class DataDrivenComponent extends Component {
 
         props = Object.keys(props).reduce((r,k) => (r[k] = this.resolveProp(k, props[k]), r), {});
 
-        if (props.ngIf && state && !state[props.ngIf]) return null;
+        console.log('Tokens', props.ngIf && this.resolveData(props.ngIf), props.ngIf);
+
+        if (props.ngIf && state && !this.resolveData(props.ngIf)) return null;
 
         if (props.ngFor) {
 
             const [scopeId, dataId] = this.resolveNgFor(props.ngFor);
 
-            const data = state[dataId];
+            const data = this.resolveData(dataId);
 
             if (!data) return null;
 
@@ -93,14 +95,37 @@ export default class DataDrivenComponent extends Component {
 
     resolvePlaceholders(str) {
 
-        return str.replace(/#\[(\w|\.)+\]/g, p => {
+        if (!str || typeof str !== 'string') return str;
 
-            return p
-                .substring(2, p.length - 1)
-                .split('.')
-                .reduce((link, p) => (link && link[p]) ? link[p] : this[p], this.state)
+        /**
+         * Select with #[<...>] placeholder
+         */
+        const selector = /#\[(\w|[\(\)\,\s\.])+\]/g;
 
-        });
+        return str.replace(selector, p => this.resolveData(p.substring(2, p.length - 1)));
+
+    }
+
+    resolveData(path, scope) {
+
+        return path
+            .split('.')
+            .reduce((s, p) => {
+
+                /**
+                 * if it's function call
+                 */
+                if (/\((.+|)\)$/.test(p)) {
+
+                    const token = p.match(/[A-Za-z]+(?=\((.+|)\)$)/)[0];
+
+                    return (this[token] || s[token]).call(this.state);
+
+                }
+
+                return (s && s[p]) ? s[p] : this[p];
+
+            }, scope || this.state);
 
     }
 

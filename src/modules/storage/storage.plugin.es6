@@ -3,12 +3,32 @@ import {Plugin} from 'applugins';
 const LIST = [
     {
         id: '1',
-        name: 'Task #1'
+        name: 'Task #1',
+        tags: [
+            {
+                id: 'tag_family',
+                name: 'Family'
+            },
+            {
+                id: 'tag_work',
+                name: 'Work'
+            }
+        ]
     }
     ,
     {
         id: '2',
-        name: 'Task #2'
+        name: 'Task #2',
+        tags: [
+            {
+                id: 'tag_plans',
+                name: 'Plans'
+            },
+            {
+                id: 'tag_future',
+                name: 'Future'
+            }
+        ]
     }
 ];
 
