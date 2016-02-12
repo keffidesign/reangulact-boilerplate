@@ -23,9 +23,17 @@ export default class LearningPlugin extends Plugin {
 
     }
 
-    onLearning_create({data}) {
+    onLearning_create({data}, cb) {
 
-        return this.event(`storage://add`).withData(data).promiseAction();
+        data = {
+            id: '3',
+            name: 'Task #3'
+        };
+
+        this
+            .event(`storage://add`)
+            .withData(data)
+            .action(err => err ? cb(err) : this.event('learning://changed').action());
 
     }
 

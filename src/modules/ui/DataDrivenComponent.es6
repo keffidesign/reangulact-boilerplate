@@ -15,103 +15,79 @@ export default class DataDrivenComponent extends Component {
 
         super();
 
-        console.log('DataDrivenComponent');
-
         const _renderInternal = this.render;
 
-        this.render = () => {
-
-            console.log('render');
-
-            console.log('renderInternal', _renderInternal.call(this));
-
-            return this.prepareJsx(_renderInternal.call(this), this.state);
-
-        };
+        this.render = () => this.prepareJsx(_renderInternal.call(this), this.state);
 
     }
 
     createElement(type, props, ...children) {
 
-        console.log('createElement', type, props, children);
-
         return {type, props: props || {}, children};
 
     }
 
-    prepareJsx({props, type, children}, state) {
+    prepareJsx({type, props, children}, state) {
 
-        console.log('prepareJsx', props, type, children, state);
+        props = Object.keys(props).reduce((r,k) => (r[k] = this.resolveProp(k, props[k]), r), {});
+
+        if (props.ngIf && state && !state[props.ngIf]) return null;
 
         if (props.ngFor) {
 
-            let [scopeId, typeOf, dataId] = this.ngForDirective(props.ngFor);
-
-            scopeId = scopeId.substring(1);
-
-            //const [scopeId, typeOf, dataId] = props.ngFor.split(' ');
+            const [scopeId, dataId] = this.resolveNgFor(props.ngFor);
 
             const data = state[dataId];
 
             if (!data) return null;
 
-            return data.map((d) => {
-
-                const newRoot = {type, props: clone(props), children: children.map((c) => clone(c))};
+            return data.map(d => {
 
                 state[scopeId] = d;
 
-                this.resolveProps(newRoot, d, scopeId);
-
-                console.log('newRoot', newRoot);
-
-                return this.prepareJsx(newRoot, state);
+                return this.cloneElement(type, props, children, state);
 
             });
 
-        } else if (props.ngIf) {
-
-            if (state[props.ngIf]) return null;
-
         }
 
-        console.log('children', children);
-
-        return React.createElement(type, props, [].concat(...(children || []).map((c) => c && (typeof c === 'string') ? this.resolvePlaceholders(c) : this.prepareJsx(c, state))))
+        return React.createElement(type, props, this.resolveChildren(children, state));
 
     }
 
-    resolveProps({props, children}, d, scopeId) {
+    cloneElement(type, props, children, state) {
 
-        console.log('resolveProps', props, children);
+        props = this.resolveProps(props);
 
-        Object.keys(props).forEach((p) => {
+        //children = this.resolveChildren(children, state);
 
-            const prop = props[p];
+        return this.prepareJsx({type, props, children}, state);
 
-            console.log('prop', prop);
+    }
 
-            if (p === 'ngFor') {
+    resolveProps(props) {
 
-                props.ngFor = undefined;
+        return Object.keys(props).reduce((r, p) => p !== 'ngFor' ? (r[p] = this.resolvePlaceholders(props[p]), r) : r, {});
 
-            } else {
+    }
 
-                props[p] = prop.startsWith(`${scopeId}.`) ? d[prop.substring(scopeId.length + 1)] : prop;
+    resolveChildren(children, state) {
 
-            }
+        if (!children) return null;
 
-        });
+        return children.map(c => (typeof c === 'string') ? this.resolvePlaceholders(c) : this.prepareJsx(c, state));
 
-        if (children.length === 1 && typeof children[0] === 'string') {
+    }
 
-            children[0] = this.resolvePlaceholders(children[0]);
+    resolveProp(key, value) {
 
-        } else {
+        if (/on[A-Z]/.test(key)) {
 
-            children.forEach((c) => this.resolveProps(c, d, scopeId));
+            return () => this.event(this.resolvePlaceholders(value)).emit();
 
         }
+
+        return value;
 
     }
 
@@ -128,14 +104,11 @@ export default class DataDrivenComponent extends Component {
 
     }
 
-    ngForDirective(value) {
+    resolveNgFor(value) {
 
-        /**
-         * Split by space
-         */
-        const tokens = value.match(/\S+/g);
+        const [scopeId, operator, dataId] = value.split(' ');
 
-        return tokens;
+        return [scopeId, dataId];
 
     }
 
@@ -197,8 +170,6 @@ export default class DataDrivenComponent extends Component {
     //}
     //
     componentWillMount() {
-
-        console.log('componentWillMount', this);
 
         (this.props.dataDependsOn || '').split(';').map(e => e.trim()).filter(e => e).forEach(
             (key) => this.addEventListener(key, (params, cb) => {

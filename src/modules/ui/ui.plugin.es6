@@ -34,8 +34,6 @@ export default class extends Plugin {
 
         const rootComponent = ViewportPage;
 
-        console.log('rootComponent', rootComponent);
-
         this.rootRoute = {name: 'viewport', path: '/', component: rootComponent};
 
         this.rootRoute.childRoutes = getRoutes([], this.rootRoute);
@@ -73,8 +71,6 @@ export default class extends Plugin {
 
         // for browser history navigation: < history={createBrowserHistory()}>
         const rootElement = document.getElementById('root') || document.body;
-
-        console.log('this.rootRoute', this.rootRoute);
 
         //this.log(this.rootRoute.childRoutes);
 

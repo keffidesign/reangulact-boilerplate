@@ -4,17 +4,16 @@ export class LearningComponent extends DataDrivenComponent {
 
     render() {
 
-        console.log('LearningComponent');
-
         return (
             <div>
-                <h1>Tasks</h1>
                 <List
                     dataFrom='learning://list'
+                    dataDependsOn='learning://changed'
+                    caption='Tasks'
                 />
                 <Button
                     caption='New'
-                    onClick='@create'
+                    action='learning://create'
                 />
             </div>
         )
