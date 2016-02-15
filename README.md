@@ -13,3 +13,5 @@ $    npm start
 # License
 
 MIT
+
+Copyright (c) 2016 Igor Obuhovski, Alex Litskevich

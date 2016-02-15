@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {Component as ReactComponent} from 'react';
 import {event} from 'applugins';
 //import clone from 'clone';
 
@@ -6,10 +6,65 @@ let COUNTER = 0;
 //import ErrorView from './ErrorView.jsx'
 //import LoadingIndicator from './LoadingIndicator.jsx'
 
+class Component {
+
+    constructor(type, props, children) {
+
+        this.type = type;
+        this.props = props || {};
+        this.children = children;
+
+    }
+
+    //build() {
+    //
+    //    this.type = this.resolveType(this.type);
+    //    this.props = this.resolveProps(this.props);
+    //    this.children = this.resolveChildren(this.children);
+    //
+    //    return React.createElement(this.type, this.props, this.children);
+    //
+    //}
+    //
+    resolveType(type) {
+
+        return type;
+
+    }
+
+    resolveDirective(id, value) {
+
+        return this[`resolve${id}Directive`](value);
+
+    }
+
+    resolveIfDirective(value) {
+
+        if (!this.getData) return null;
+
+    }
+
+    resolveEachDirective(value) {
+
+        const [scopeId, dataId] = this.resolveEach(value);
+
+        const data = this.getData(dataId);
+
+        return data ? data.map(d => new Component(this.type, this.props, this.children)) : null;
+
+    }
+
+}
+
+const EXCEPTIONAL_NOUNS = {
+    data: 'datum',
+    children: 'child'
+};
+
 /**
  * The base for all components.
  */
-export default class DataDrivenComponent extends Component {
+export default class DataDrivenComponent extends ReactComponent {
 
     constructor() {
 
@@ -31,13 +86,26 @@ export default class DataDrivenComponent extends Component {
 
         props = Object.keys(props).reduce((r,k) => (r[k] = this.resolveProp(k, props[k]), r), {});
 
-        console.log('Tokens', props.ngIf && this.resolveData(props.ngIf), props.ngIf);
+        if (props.if && state) {
 
-        if (props.ngIf && state && !this.resolveData(props.ngIf)) return null;
+            if (!this.resolveData(props.if)) {
 
-        if (props.ngFor) {
+                const ElseStatment = children.filter(({type}) => type === 'else').pop();
 
-            const [scopeId, dataId] = this.resolveNgFor(props.ngFor);
+                if (ElseStatment) return this.prepareJsx(ElseStatment, state);
+
+
+                return null;
+
+            }
+
+            children = children.filter(({type}) => type !== 'else');
+
+        }
+
+        if (props.each) {
+
+            const [scopeId, dataId] = this.resolveEach(props.each);
 
             const data = this.resolveData(dataId);
 
@@ -69,7 +137,7 @@ export default class DataDrivenComponent extends Component {
 
     resolveProps(props) {
 
-        return Object.keys(props).reduce((r, p) => p !== 'ngFor' ? (r[p] = this.resolvePlaceholders(props[p]), r) : r, {});
+        return Object.keys(props).reduce((r, p) => p !== 'each' ? (r[p] = this.resolvePlaceholders(props[p]), r) : r, {});
 
     }
 
@@ -83,11 +151,7 @@ export default class DataDrivenComponent extends Component {
 
     resolveProp(key, value) {
 
-        if (/on[A-Z]/.test(key)) {
-
-            return () => this.event(this.resolvePlaceholders(value)).emit();
-
-        }
+        if (/on[A-Z]/.test(key)) return () => this.event(this.resolvePlaceholders(value)).emit();
 
         return value;
 
@@ -112,28 +176,41 @@ export default class DataDrivenComponent extends Component {
             .split('.')
             .reduce((s, p) => {
 
-                /**
-                 * if it's function call
-                 */
-                if (/\((.+|)\)$/.test(p)) {
+                const value = this[p] || s[p];
 
-                    const token = p.match(/[A-Za-z]+(?=\((.+|)\)$)/)[0];
-
-                    return (this[token] || s[token]).call(this.state);
-
-                }
-
-                return (s && s[p]) ? s[p] : this[p];
+                return (typeof value === 'function') ? value.call(s) : value;
 
             }, scope || this.state);
 
     }
 
-    resolveNgFor(value) {
+    resolveEach(value) {
 
-        const [scopeId, operator, dataId] = value.split(' ');
+        let [scopeId, operator, dataId = scopeId] = value.split(' ');
+
+        if (scopeId === dataId) {
+
+            scopeId = scopeId.split('.').pop();
+
+            scopeId = EXCEPTIONAL_NOUNS[scopeId] || scopeId.slice(0, -1);
+
+        }
 
         return [scopeId, dataId];
+
+    }
+
+    resolveIfDirective({props, children}) {
+
+        if (!this.resolveData(props.if)) {
+
+            const elseStatement = children.filter(({type}) => type === 'else').pop();
+
+            return elseStatement ? this.prepareJsx(elseStatement, state) : null;
+
+        }
+
+        children = children.filter(({type}) => type !== 'else');
 
     }
 
