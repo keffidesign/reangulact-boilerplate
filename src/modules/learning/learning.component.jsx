@@ -1,6 +1,6 @@
-import {DataDrivenComponent, List, Button} from '../ui';
+import {BaseComponent, List, Button} from '../ui';
 
-export class LearningComponent extends DataDrivenComponent {
+export class LearningComponent extends BaseComponent {
 
     render() {
 

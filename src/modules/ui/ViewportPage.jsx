@@ -1,9 +1,9 @@
-import DataDrivenComponent from './DataDrivenComponent.es6';
+import {BaseComponent} from './index.es6';
 
 /**
  * Top-level component that mapped to the root.
  */
-export default class ViewportPage extends DataDrivenComponent {
+export default class ViewportPage extends BaseComponent {
 
     render() {
 

@@ -15,14 +15,6 @@ const PAGES = {};
 
 const document = window.document;
 
-class Test extends React.Component {
-
-    render() {
-        return (<div>dddddd</div>);
-    }
-
-}
-
 /**
  * Web Client Plugin that adds a React Router facility.
  */

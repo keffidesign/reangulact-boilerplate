@@ -1,6 +1,6 @@
-import {DataDrivenComponent, List} from '../ui';
+import {BaseComponent, List} from '../ui';
 
-export class InfoComponent extends DataDrivenComponent {
+export class InfoComponent extends BaseComponent {
 
     render() {
 
