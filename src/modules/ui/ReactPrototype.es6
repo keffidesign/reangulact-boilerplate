@@ -1,3 +1,4 @@
+import preact from 'preact';
 import {event} from 'applugins';
 
 const EXCEPTIONAL_NOUNS = {
@@ -26,11 +27,19 @@ export default {
 
         if (st.dataLoading) {
 
+            console.log('dataLoading', this.renderDataLoading());
+
             return this.renderDataLoading();
 
         }
 
-        return this.prepareJsx(this._renderInternal.call(this), this.state);
+        //console.log('render', this.prepareJsx(this._renderInternal.call(this), this.state), this._renderInternal.call(this));
+
+        const result = this.prepareJsx(this._renderInternal.call(this), this.state)
+
+        console.log('rendergfdfdsf', result, st);
+
+        return result
 
     },
 
@@ -78,7 +87,11 @@ export default {
 
         }
 
-        return React.createElement(type, props, this.resolveChildren(children, state));
+        const result = this.resolveChildren(children, state);
+
+        return preact.h(type, props, ...result/*this.resolveChildren(children, state)*/);
+
+        //return React.createElement(type, props, this.resolveChildren(children, state));
 
     },
 

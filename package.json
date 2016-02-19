@@ -6,6 +6,8 @@
   "dependencies": {
     "applugins": "git://github.com/alitskevich/applugins.git",
     "clone": "^1.0.2",
+    "preact": "^3.4.0",
+    "preact-router": "^1.2.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0"

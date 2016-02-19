@@ -4,6 +4,7 @@ module.exports = {
         app: './src/client.es6'
         ,
         vendor: [
+            'preact',
             'babel-polyfill',
             'react',
             'react-dom',
@@ -29,7 +30,17 @@ module.exports = {
                 test: /\.es6$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['es2015', 'stage-0', 'react']
+                    presets: ['es2015', 'stage-0']//, 'react'
+                    ,
+                    plugins: [
+                        [
+                            'transform-react-jsx'
+                            ,
+                            {
+                                pragma: 'preact.h'
+                            }
+                        ]
+                    ]
                 }
             }
             ,

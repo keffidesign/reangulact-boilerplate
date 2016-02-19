@@ -6,6 +6,7 @@ export class LearningComponent extends BaseComponent {
 
         return (
             <div>
+                <h1>Learning Component</h1>
                 <List
                     dataFrom='learning://list'
                     dataDependsOn='learning://changed'

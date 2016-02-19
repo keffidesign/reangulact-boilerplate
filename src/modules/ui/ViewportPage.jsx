@@ -7,6 +7,8 @@ export default class ViewportPage extends BaseComponent {
 
     render() {
 
+        console.log('sssssssssssadsfadsssss353');
+
         return (
             <div className='root'>
                 <h1>Viewport Page</h1>

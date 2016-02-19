@@ -1,7 +1,6 @@
-import {Component as ReactComponent} from 'react';
-export {List, Button} from 'ui-components';
+import {Component as ReactComponent} from 'preact';
 
-import {List} from 'ui-components';
+export {List, Button} from 'ui-components';
 
 import {BaseComponent as _BaseComponent} from 'ui-components';
 import ReactPrototype from './ReactPrototype';
