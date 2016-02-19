@@ -7,7 +7,8 @@ module.exports = {
             'babel-polyfill',
             'react',
             'react-dom',
-            'react-router'
+            'react-router',
+            'bootstrap'
         ]
     },
     output: {

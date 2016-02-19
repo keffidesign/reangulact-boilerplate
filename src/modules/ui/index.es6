@@ -1,7 +1,5 @@
 import {Component as ReactComponent} from 'react';
-export {List, Button} from 'ui-components';
-
-import {List} from 'ui-components';
+export {Table, List, Button, Input, Dropdown, Checkbox} from 'ui-components';
 
 import {BaseComponent as _BaseComponent} from 'ui-components';
 import ReactPrototype from './ReactPrototype';

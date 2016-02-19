@@ -44,9 +44,11 @@ export default {
 
         props = Object.keys(props).reduce((r,k) => (r[k] = this.resolveProp(k, props[k]), r), {});
 
-        if (props.if && state) {
+        if (props.if != undefined && state) {
 
-            if (!this.resolveData(props.if)) {
+            console.log('type', type, props.if);
+
+            if (!props.if) {
 
                 const ElseStatment = children.filter(({type}) => type === 'else').pop();
 
@@ -86,8 +88,6 @@ export default {
 
         props = this.resolveProps(props);
 
-        //children = this.resolveChildren(children, state);
-
         return this.prepareJsx({type, props: {key: this.uniqueKey(), ...props}, children}, state);
 
     }
@@ -108,11 +108,13 @@ export default {
     ,
     resolveProp: function(key, value) {
 
-        if (/on[A-Z]/.test(key)) {
+        if (/^on[A-Z]/.test(key)) {
 
             return this[value] ? (...args) => this[value](...args) : () => this.event(this.resolvePlaceholders(value)).emit();
 
         }
+
+        if (this[value] && typeof this[value] === 'function') return this[value].call(this.state);
 
         return value;
 
@@ -125,7 +127,7 @@ export default {
         /**
          * Select with #[<...>] placeholder
          */
-        const selector = /#\[(\w|[\(\)\,\s\.])+\]/g;
+        const selector = /#\[(\w|[\[\]\(\)\,\s\.])+\]/g;
 
         return str.replace(selector, p => this.resolveData(p.substring(2, p.length - 1)));
 

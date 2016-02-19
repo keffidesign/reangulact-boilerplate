@@ -1,4 +1,5 @@
 import {BaseComponent} from './index.es6';
+//import 'bootstrap';
 
 /**
  * Top-level component that mapped to the root.
@@ -9,8 +10,7 @@ export default class ViewportPage extends BaseComponent {
 
         return (
             <div className='root'>
-                <h1>Viewport Page</h1>
-                <div className='content-wrapper'>
+                <div className='content-wrapper container'>
                     {
                         this.props.children
                     }
