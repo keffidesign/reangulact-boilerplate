@@ -5,6 +5,10 @@ const EXCEPTIONAL_NOUNS = {
     children: 'child'
 };
 
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 /**
  * The base for all components.
  */
@@ -24,13 +28,19 @@ export default {
         const st = this.state;
         let data = st.data;
 
+        this.state.props = p;
+
         if (st.dataLoading) {
 
             return this.renderDataLoading();
 
         }
 
-        return this.prepareJsx(this._renderInternal.call(this), this.state);
+        console.log('renderInternal', this._renderInternal);
+
+        return this.prepareJsx(this._renderInternal, this.state);
+
+        //return this.prepareJsx(this._renderInternal.call(this), this.state);
 
     },
 
@@ -42,25 +52,7 @@ export default {
 
     prepareJsx: function({type, props, children}, state) {
 
-        props = Object.keys(props).reduce((r,k) => (r[k] = this.resolveProp(k, props[k]), r), {});
-
-        if (props.if != undefined && state) {
-
-            console.log('type', type, props.if);
-
-            if (!props.if) {
-
-                const ElseStatment = children.filter(({type}) => type === 'else').pop();
-
-                if (ElseStatment) return this.prepareJsx(ElseStatment, state);
-
-                return null;
-
-            }
-
-            children = children.filter(({type}) => type !== 'else');
-
-        }
+        console.log('prepareJsx', type, props, children);
 
         if (props.each) {
 
@@ -80,6 +72,30 @@ export default {
 
         }
 
+        props = Object.keys(props).reduce((r,k) => (r[k] = this.resolveProp(k, props[k], state), r), {});
+
+        if (props.if != undefined && state) {
+
+            //console.log('type', props.if);
+
+            if (!props.if) {
+
+                const ElseStatment = children.filter(({type}) => type === 'else').pop();
+
+                if (ElseStatment) return this.prepareJsx(ElseStatment, state);
+
+                return null;
+
+            }
+
+            children = children.filter(({type}) => type !== 'else');
+
+        }
+
+
+
+        //props = Object.keys(props).reduce((r,k) => (r[k] = this.resolveProp(k, props[k], state), r), {});
+
         return React.createElement(type, props, this.resolveChildren(children, state));
 
     },
@@ -88,7 +104,7 @@ export default {
 
         props = this.resolveProps(props);
 
-        return this.prepareJsx({type, props: {key: this.uniqueKey(), ...props}, children}, state);
+        return this.prepareJsx({type, props: { ...props}, children}, state);
 
     }
     ,
@@ -106,7 +122,11 @@ export default {
 
     }
     ,
-    resolveProp: function(key, value) {
+    resolveProp: function(key, value, scope) {
+
+        if (typeof value !== 'string') return value;
+
+        value = value.trim();
 
         if (/^on[A-Z]/.test(key)) {
 
@@ -114,7 +134,19 @@ export default {
 
         }
 
-        if (this[value] && typeof this[value] === 'function') return this[value].call(this.state);
+        const selector = /(\w|[\[\]\(\)\,\.])+/g;
+
+        const calls = value.match(selector);
+
+        if (calls && calls.length === 1 && calls[0].length === value.length) {
+
+            const result = this.resolveData(value, scope);
+
+            //console.log('RESULT', key, value, result);
+
+            return result != undefined ? result : value;
+
+        }
 
         return value;
 
@@ -129,17 +161,22 @@ export default {
          */
         const selector = /#\[(\w|[\[\]\(\)\,\s\.])+\]/g;
 
-        return str.replace(selector, p => this.resolveData(p.substring(2, p.length - 1)));
+        return str
+            .trim()
+            .replace(selector, p => this.resolveData(p.substring(2, p.length - 1)));
 
     }
     ,
     resolveData: function(path, scope) {
 
+
+        //console.log('resolveData', path, scope, this.state, this);
+
         return path
             .split('.')
             .reduce((s, p) => {
 
-                const value = this[p] || s[p];
+                const value = this[`get${capitalize(p)}`] || s[`get${capitalize(p)}`] || this[p] || s[p];
 
                 return (typeof value === 'function') ? value.call(s) : value;
 
@@ -260,11 +297,14 @@ export default {
     ,
     setData(data, extraState) {
 
+        console.log('setData', data, this);
+
         if (!this.done) {
 
             this.setState({data, ...extraState, dataChanged: (this.state.dataChanged || 0) + 1});
 
-            this.dataChanged(data)
+            this.dataChanged(data);
+
         }
 
     }

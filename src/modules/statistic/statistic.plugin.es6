@@ -1,5 +1,5 @@
 import {Plugin} from 'applugins';
-import {InfoComponent} from './info.component.jsx';
+import {InfoComponent} from './statistic.component.jsx';
 
 export default class InfoPlugin extends Plugin {
 
@@ -9,7 +9,7 @@ export default class InfoPlugin extends Plugin {
 
         return [
             {
-                id: 'info',
+                id: 'statistic',
                 component: InfoComponent
             }
         ]

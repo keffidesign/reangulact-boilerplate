@@ -72,6 +72,22 @@ export default class extends Plugin {
 
     }
 
+    onNavigation_list(ev) {
+
+        return [
+            {
+                id: 'practice',
+                caption: 'Practice'
+            }
+            ,
+            {
+                id: 'stats',
+                caption: 'Statistic'
+            }
+        ]
+
+    }
+
 }
 
 /**

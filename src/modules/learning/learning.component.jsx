@@ -1,4 +1,4 @@
-import {BaseComponent, List, Button, Table, Input, Dropdown, Checkbox} from '../ui';
+import {BaseComponent, List, Button, Table, Input, Dropdown, Checkbox, NavBar, Article, Form} from '../ui';
 
 export class LearningComponent extends BaseComponent {
 
@@ -6,6 +6,13 @@ export class LearningComponent extends BaseComponent {
 
         return (
             <div>
+                <NavBar
+                    caption='Practice'
+                    dataFrom='navigation://list'
+                />
+                <Form
+                    meta='FORM_META'
+                />
                 <Dropdown
                     dataFrom='learning://list'
                     onValueChanged='onDropdownChanged'
@@ -78,7 +85,36 @@ export class LearningComponent extends BaseComponent {
                 id: 'name',
                 caption: 'Name'
             }
+        ]
 
+    }
+
+    FORM_META() {
+
+        return [
+            {
+                id: 'name',
+                caption: 'Name',
+                type: 'string'
+            }
+            ,
+            {
+                id: 'age',
+                caption: 'Age',
+                type: 'number'
+            }
+            ,
+            {
+                id: 'gender',
+                caption: 'Gender',
+                type: 'enum'
+            }
+            ,
+            {
+                id: 'public',
+                caption: 'Public',
+                type: 'boolean'
+            }
         ]
 
     }

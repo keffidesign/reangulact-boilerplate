@@ -1,4 +1,4 @@
-import {BaseComponent} from './index.es6';
+import {BaseComponent, Footer} from './index.es6';
 //import 'bootstrap';
 
 /**
@@ -10,7 +10,7 @@ export default class ViewportPage extends BaseComponent {
 
         return (
             <div className='root'>
-                <div className='content-wrapper container'>
+                <div className='content-wrapper'>
                     {
                         this.props.children
                     }
