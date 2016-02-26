@@ -1,4 +1,4 @@
-import {BaseComponent, List, Button, Table, Input, Dropdown, Checkbox, NavBar, Article, Form} from '../ui';
+import {BaseComponent, List, Button, Table, Input, Dropdown, Checkbox, NavBar, Article, Form, Footer} from '../ui';
 
 export class LearningComponent extends BaseComponent {
 
@@ -7,26 +7,12 @@ export class LearningComponent extends BaseComponent {
         return (
             <div>
                 <NavBar
-                    caption='Practice'
+                    caption='Reangulact'
                     dataFrom='navigation://list'
                 />
                 <Form
                     meta='FORM_META'
-                />
-                <Dropdown
-                    dataFrom='learning://list'
-                    onValueChanged='onDropdownChanged'
-                />
-                <Checkbox
-                    caption='Some checkbox caption'
-                    onValueChanged='onCheckboxChanged'
-                />
-                <Input
-                    onValueChanged='onInputChanged'
-                />
-                <Table
-                    meta='TABLE_META'
-                    dataFrom='learning://list'
+                    dataChanged='formDataChanged'
                 />
                 <List
                     dataFrom='learning://list'
@@ -34,29 +20,51 @@ export class LearningComponent extends BaseComponent {
                     meta='LIST_META'
                     caption='Tasks'
                 />
+                <Dropdown
+                    dataFrom='learning://list'
+                    valueChanged='dropdownChanged'
+                />
+                <Checkbox
+                    caption='Some checkbox caption'
+                    valueChanged='checkboxChanged'
+                />
+                <Input
+                    valueChanged='inputChanged'
+                />
+                <Table
+                    meta='TABLE_META'
+                    dataFrom='learning://list'
+                />
                 <Button
                     mode='primary'
                     caption='New'
                     onClick='learning://create'
                 />
+                <Footer />
             </div>
         )
 
     }
 
-    onDropdownChanged(value) {
+    formDataChanged(...args) {
+
+        console.log('formDataChanged', this, ...args);
+
+    }
+
+    dropdownChanged(value) {
 
         console.log('onDropdownChanged', value);
 
     }
 
-    onCheckboxChanged(value) {
+    checkboxChanged(value) {
 
         console.log('onCheckboxChanged', value);
 
     }
 
-    onInputChanged(value) {
+    inputChanged(value) {
 
         console.log('onInputChanged', value);
 
@@ -106,7 +114,8 @@ export class LearningComponent extends BaseComponent {
             ,
             {
                 id: 'gender',
-                caption: 'Gender',
+                //caption: 'Gender',
+                dataFrom: 'learning://list',
                 type: 'enum'
             }
             ,

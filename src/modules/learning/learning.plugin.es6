@@ -37,20 +37,4 @@ export default class LearningPlugin extends Plugin {
 
     }
 
-    sdfas() {
-
-        return [
-            {
-                id: 'name',
-                name: 'Name',
-                type: 'string'
-            }
-            ,
-            {
-                age
-            }
-        ]
-
-    }
-
 }

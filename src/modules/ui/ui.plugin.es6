@@ -72,9 +72,9 @@ export default class extends Plugin {
 
     }
 
-    onNavigation_list(ev) {
+    onNavigation_list(ev, cb) {
 
-        return [
+        const data = [
             {
                 id: 'practice',
                 caption: 'Practice'
@@ -85,6 +85,8 @@ export default class extends Plugin {
                 caption: 'Statistic'
             }
         ]
+
+        setTimeout(() => cb(null, data), 1000)
 
     }
 
