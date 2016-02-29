@@ -70,7 +70,7 @@ export class LearningComponent extends BaseComponent {
 
     }
 
-    TABLE_META() {
+    getTABLE_META() {
 
         return [
             {
@@ -86,7 +86,7 @@ export class LearningComponent extends BaseComponent {
 
     }
 
-    LIST_META() {
+    getLIST_META() {
 
         return [
             {
@@ -97,7 +97,7 @@ export class LearningComponent extends BaseComponent {
 
     }
 
-    FORM_META() {
+    getFORM_META() {
 
         return [
             {
