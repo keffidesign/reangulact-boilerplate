@@ -8,30 +8,39 @@ module.exports = {
             'react',
             'react-dom',
             'react-router'
-            //,
-            //'bootstrap'
         ]
     },
     output: {
         filename: '[name].js'
     }
     ,
+    devServer: {
+        /**
+         * CORS for api requests
+         *
+         * @see https://webpack.github.io/docs/webpack-dev-server.html#proxy
+         * @see http://peterashwell.com/webpack,/proxy,/api,/development/2015/06/05/webpack-as-proxy.html
+         */
+        proxy: {
+            '/api/*': 'http://localhost:8080'
+        }
+    }
+    ,
     resolve: {
         /**
          * @see https://webpack.github.io/docs/configuration.html#resolve-extensions
          */
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.es6'],
+        extensions: ['', '.js', '.ts', '.es6', '.jsx'],
         modulesDirectories: ['node_modules', 'git_modules', 'modules']
     }
     ,
     module: {
         loaders: [
             {
-                //TODO use .babelrc instead of query
                 test: /\.es6$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['es2015', 'stage-0', 'react']
+                    presets: ['es2015', 'stage-0']
                 }
             }
             ,
@@ -46,7 +55,7 @@ module.exports = {
                             'transform-react-jsx'
                             ,
                             {
-                                pragma: 'this.createElement'
+                                pragma: 'Array'
                             }
                         ]
                     ]

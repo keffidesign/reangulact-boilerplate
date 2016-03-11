@@ -10,7 +10,6 @@ export default class LearningPlugin extends Plugin {
         return [
             {
                 id: 'learning',
-                isDefault: true,
                 component: LearningComponent
             }
         ]
