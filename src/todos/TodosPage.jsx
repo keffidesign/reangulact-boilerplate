@@ -1,7 +1,5 @@
 import * as ui from '../ui';
 
-console.log('ui', ui.Component);
-
 export default class TodosPage extends ui.Component {
 
     click() {
@@ -24,9 +22,6 @@ export default class TodosPage extends ui.Component {
                     click=':click'
                     />
             </ui.Content>
-            <ui.Footer
-               // caption='Copyright'
-            />
         </div>
     );
 
