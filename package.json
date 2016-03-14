@@ -4,6 +4,9 @@
   "description": "",
   "main": "./src/client.ts",
   "dependencies": {
+    "reangulact-r": "git://github.com/keffidesign/reangulact-r.git",
+    "reangulact": "git://github.com/keffidesign/reangulact.git",
+    "applugins-commons": "git://github.com/alitskevich/applugins-commons.git",
     "applugins": "git://github.com/alitskevich/applugins.git",
     "bootstrap": "^4.0.0-alpha.2",
     "react": "^0.14.7",

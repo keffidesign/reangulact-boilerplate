@@ -1,5 +1,7 @@
 import {Plugin} from 'applugins';
-import {TodosPage} from './TodosPage.jsx';
+import TodosPage from './TodosPage.jsx';
+
+console.log('Plugin');
 
 export default class TodosPlugin extends Plugin {
 

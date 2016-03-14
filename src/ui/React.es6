@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, hashHistory, browserHistory} from 'react-router';
 
-import {BaseComponent} from 'react-prototype';
+import {initialize} from 'reangulact-r';
 
 //import ViewportPage from './ViewportPage.jsx';
 const getRoutes = (pages = [], parent = null) => pages.map(page => {
@@ -57,6 +57,8 @@ function registerPage ({id, path, component, isDefault}){
 
 export function bootstrap(pages) {
 
+    initialize();
+
     //this.log('registerPage', pages);
 
     pages.forEach((page) => registerPage(page));
@@ -68,8 +70,8 @@ export function bootstrap(pages) {
     const rootElement = document.getElementById('root') || document.body;
 
     //this.log(this.rootRoute.childRoutes);
-    ReactDOM.render(React.createElement(Router, {routes: rootRoute, history: hashHistory}), rootElement);
-    //ReactDOM.render(<Router routes={rootRoute} history={hashHistory}/>, rootElement);
+
+    ReactDOM.render(React.createElement(Router,{routes:rootRoute, history:hashHistory}), rootElement);
 }
 
 /**

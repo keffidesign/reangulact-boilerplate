@@ -1,6 +1,8 @@
 import * as ui from '../ui';
 
-export class TodosPage extends ui.BaseComponent {
+console.log('ui', ui.Component);
+
+export default class TodosPage extends ui.Component {
 
     click() {
 
