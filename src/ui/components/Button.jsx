@@ -7,7 +7,7 @@ export default class UiButton extends Component {
     static TEMPLATE = (
         <button
             class=':(button button--(:mode))'
-            disabled=":disabled"
+            disabled=':disabled'
             click=':click'
             >
             <i if=':icon' class=':(fa fa-(:icon))'></i>

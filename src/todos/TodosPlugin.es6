@@ -1,8 +1,6 @@
 import {Plugin} from 'applugins';
 import TodosPage from './TodosPage.jsx';
 
-console.log('Plugin');
-
 export default class TodosPlugin extends Plugin {
 
     onUi_registerPages() {

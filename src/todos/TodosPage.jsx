@@ -16,6 +16,7 @@ export default class TodosPage extends ui.Component {
             <ui.Content>
                 <ui.List
                     dataFrom='todos://list'
+                    caption='My list'
                     />
                 <ui.Button
                     caption='Create'
