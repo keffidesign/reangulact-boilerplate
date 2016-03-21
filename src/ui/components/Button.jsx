@@ -2,11 +2,11 @@ import {Component} from 'reangulact';
 
 export default class UiButton extends Component {
 
-    static DEFAULTS = {mode: 'main'};
+    static DEFAULTS = {mode: 'primary'};
 
     static TEMPLATE = (
         <button
-            class=':(button button--(:mode))'
+            class=':(btn btn-(:mode))'
             disabled=':disabled'
             click=':click'
             >

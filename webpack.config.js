@@ -1,10 +1,14 @@
 //TODO refactor it with es6
 module.exports = {
+    devtool: 'source-map',
+    cache: false,
+    debug: true,
     entry:  {
         app: './src/client.es6'
         ,
         vendor: [
-            'babel-polyfill',
+            'babel-regenerator-runtime'
+            ,
             'react',
             'react-dom',
             'react-router'
@@ -41,6 +45,10 @@ module.exports = {
                 loader: 'babel-loader',
                 query: {
                     presets: ['es2015', 'stage-0']
+                    ,
+                    plugins:[
+                        'transform-flow-strip-types'
+                    ]
                 }
             }
             ,
@@ -58,6 +66,8 @@ module.exports = {
                                 pragma: 'Array'
                             }
                         ]
+                        ,
+                        'transform-flow-strip-types'
                     ]
                 }
             }

@@ -25,7 +25,6 @@ export default class TodosPage extends ui.Component {
                 <ui.List
                     dataFrom='todos://list'
                     dataDependsOn='todos://changed'
-                    caption='My list'
                     />
                 <ui.Input
                     valueChanged=':changed'

@@ -13,7 +13,7 @@ export default class UiList extends DataComponent {
                     :datum.name
                 </li>
                 <else if=':error'>
-                    <span>:Error: :error.message</span>
+                    <span>:(Error: (:error.message))</span>
                     <else if=':emptyData'>
                         <span>There is no data.</span>
                     </else>
