@@ -4,7 +4,15 @@ export default class TodosPage extends ui.Component {
 
     click() {
 
-        this.event('todos://create').emit();
+        const name = this.get('todoName');
+
+        this.event('todos://create').withData({name}).emit();
+
+    }
+
+    changed(value) {
+
+        this.put('todoName', value);
 
     }
 
@@ -16,7 +24,11 @@ export default class TodosPage extends ui.Component {
             <ui.Content>
                 <ui.List
                     dataFrom='todos://list'
+                    dataDependsOn='todos://changed'
                     caption='My list'
+                    />
+                <ui.Input
+                    valueChanged=':changed'
                     />
                 <ui.Button
                     caption='Create'

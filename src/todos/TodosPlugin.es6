@@ -22,7 +22,7 @@ export default class TodosPlugin extends Plugin {
 
     onTodos_create(ev) {
 
-        return this.event('api://create/todos').withData(ev.data).promise();
+        this.event('api://create/todos').withData(ev.data).emit(() => this.event('todos://changed').emit());
 
     }
 
