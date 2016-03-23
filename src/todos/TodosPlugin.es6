@@ -1,7 +1,16 @@
 import {Plugin} from 'applugins';
+import Resources from './Resources.es6';
 import TodosPage from './TodosPage.jsx';
 
 export default class TodosPlugin extends Plugin {
+
+    init() {
+
+        this.event('resource://add').withData(Resources).action();
+
+        super.init();
+
+    }
 
     onUi_registerPages() {
 

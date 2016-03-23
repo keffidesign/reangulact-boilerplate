@@ -2,17 +2,29 @@ import * as ui from '../ui';
 
 export default class TodosPage extends ui.Component {
 
-    click() {
+    async init() {
 
-        const name = this.get('todoName');
+        const meta = await this.event('resource://get/CREATE_TODO').promiseAction();
 
-        this.event('todos://create').withData({name}).emit();
+        this.put('meta', meta);
+
+        super.init();
 
     }
 
-    changed(value) {
+    click() {
 
-        this.put('todoName', value);
+        const data = this.get('data');
+
+        this.event('todos://create').withData(data).emit();
+
+    }
+
+    change(data) {
+
+        console.log('change', data);
+
+        this.put('data', data);
 
     }
 
@@ -22,17 +34,22 @@ export default class TodosPage extends ui.Component {
                 caption='Todos'
                 />
             <ui.Content>
-                <ui.List
-                    dataFrom='todos://list'
-                    dataDependsOn='todos://changed'
-                    />
-                <ui.Input
-                    valueChanged=':changed'
-                    />
-                <ui.Button
-                    caption='Create'
-                    click=':click'
-                    />
+                <div class='col col-md-8'>
+                    <ui.List
+                        dataFrom='todos://list'
+                        dataDependsOn='todos://changed'
+                        />
+                </div>
+                <div class='col col-md-4' if=':meta'>
+                    <ui.Form
+                        meta=':meta'
+                        dataChanged=':change'
+                        />
+                    <ui.Button
+                        caption='Create'
+                        click=':click'
+                        />
+                </div>
             </ui.Content>
         </div>
     );

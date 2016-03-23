@@ -12,9 +12,10 @@ export default class UiInput extends Component {
 
     static TEMPLATE = (
         <input
-            change=':change'
+            class='form-control'
+            placeholder=':caption'
             value=':value'
-            >
-        </input>
+            change=':change'
+            />
     );
 }
