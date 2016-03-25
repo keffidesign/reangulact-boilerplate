@@ -1,6 +1,6 @@
 import * as ui from '../ui';
 
-export default class TodosPage extends ui.Component {
+export default class TodoPage extends ui.Component {
 
     async init() {
 
@@ -12,7 +12,7 @@ export default class TodosPage extends ui.Component {
 
     }
 
-    click() {
+    save() {
 
         const data = this.get('data');
 
@@ -28,32 +28,20 @@ export default class TodosPage extends ui.Component {
 
     }
 
-    static TEMPLATE2ss = (
-        <ui.Form
-            meta=':meta'
-            dataChanged=':change'
-        />
-    );
     static TEMPLATE = (
         <div>
-            <ui.Header caption='Todo List'/>
+            <ui.Header caption=':data.name'/>
             <ui.Content>
-                <div class='col col-md-8'>
-                    <ui.List
-                        dataFrom='todos://list'
-                        dataDependsOn='todos://changed'
-                        itemClick=":itemClick"
-                    />
-                </div>
-                <div class='col col-md-4'>
+                <div class='col col-md-12'>
                     <ui.Form
                         meta=':meta'
+                        data=":data"
                         dataChanged=':change'
-                    />
+                        />
                     <ui.Button
-                        caption='Create'
-                        click=':click'
-                    />
+                        caption='Save'
+                        click=':save'
+                        />
                 </div>
             </ui.Content>
         </div>

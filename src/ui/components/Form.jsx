@@ -1,5 +1,5 @@
 import {DataComponent} from 'reangulact';
-import Fieldset from './Fieldset.jsx';
+import Fieldset from './Field.jsx';
 
 export default class UiForm extends DataComponent {
 

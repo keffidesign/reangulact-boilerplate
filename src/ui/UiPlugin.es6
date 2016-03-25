@@ -8,8 +8,8 @@ export default class UiPlugin extends Plugin {
 
         const pages = await this.event('ui://registerPages').promise();
 
-        //bootstrap(pages);
-        bootstrapNg(pages);
+        bootstrap(pages);
+        //bootstrapNg(pages);
 
         return super.init();
 

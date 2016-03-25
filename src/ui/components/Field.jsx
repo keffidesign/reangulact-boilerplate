@@ -1,12 +1,10 @@
 import {Component} from 'reangulact';
 import Input from './Input.jsx';
 
-export default class UiFieldset extends Component {
+export default class UiField extends Component {
 
     change(value) {
-
         this.put('value', value);
-
     }
 
     static TEMPLATE = (

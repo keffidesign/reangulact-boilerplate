@@ -3,23 +3,26 @@ import {DataComponent} from 'reangulact';
 export default class UiList extends DataComponent {
 
     static DEFAULTS = {
-        emptyMessage: 'Empty'
+        emptyMessage: 'There is no data.'
     };
 
     static TEMPLATE = (
-        <div>
-            <ul class='list-group' if=':data'>
-                <li class='list-group-item' each='datum of :data'>
-                    :datum.name
-                </li>
-                <else if=':error'>
-                    <span>:(Error: (:error.message))</span>
-                    <else if=':emptyData'>
-                        <span>There is no data.</span>
+        <block if=':error'>
+            <span>:(Error: (:error.message))</span>
+            <else>
+                <block if=':dataLoading'>
+                    <span>Loading</span>
+                    <else>
+                        <ul class='list-group' if=':data'>
+                            <li class='list-group-item' each='datum of :data' click=":itemClick">:datum.name</li>
+                            <else>
+                                <span>:emptyMessage</span>
+                            </else>
+                        </ul>
                     </else>
-                </else>
-            </ul>
-        </div>
+                </block>
+            </else>
+        </block>
     );
 
 }

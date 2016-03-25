@@ -5,4 +5,16 @@
         "stage-0",
         "es2015"
     ]
+    ,
+    plugins: [
+        [
+            'transform-react-jsx'
+            ,
+            {
+                pragma: 'Array'
+            }
+        ]
+        ,
+        'transform-flow-strip-types'
+    ]
 }
