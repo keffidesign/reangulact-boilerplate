@@ -14,7 +14,7 @@ export default class UiList extends DataComponent {
                     <span>Loading</span>
                     <else>
                         <ul class='list-group' if=':data'>
-                            <li class='list-group-item' each='datum of :data' click=":itemClick">:datum.name</li>
+                            <li class='list-group-item' each='datum of :data' click=":itemClick" data-id=":datum.id">:datum.name</li>
                             <else>
                                 <span>:emptyMessage</span>
                             </else>
@@ -25,4 +25,7 @@ export default class UiList extends DataComponent {
         </block>
     );
 
+    itemClick(ev, data){
+        this.log('itemClick',ev, data)
+    }
 }

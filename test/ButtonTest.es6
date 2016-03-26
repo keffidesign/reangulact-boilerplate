@@ -11,7 +11,7 @@ const sourceSample =`
 export default {
     type: Button,
     ngResult:`
-    <button [ngClass]="'btn btn-'+get('mode')+''" [attr.disabled]="get('disabled')" (click)="get('click')($event)">
+    <button [ngClass]="'btn btn-'+get('mode')+''" [attr.disabled]="get('disabled')" (click)="getClicker('click')($event)">
         <i *ngIf="get('icon')" [ngClass]="'fa fa-'+get('icon')+''"></i>
         <template [ngIf]="get('caption')">{{get('caption')}}</template>
         <ng-content></ng-content>

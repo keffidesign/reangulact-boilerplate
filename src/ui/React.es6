@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Router, hashHistory, browserHistory} from 'react-router';
+//import React from 'react';
+//import ReactDOM from 'react-dom';
+const {Router, hashHistory, browserHistory} = ReactRouter;//from 'react-router';
 
 import {initialize} from 'reangulact-r';
 
