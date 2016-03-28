@@ -1,62 +1,32 @@
 import * as ui from '../ui';
+import NewTodo from './NewTodo.jsx';
 
 export default class TodosPage extends ui.Component {
 
-    async init() {
-
-        const meta = await this.event('resource://get/CREATE_TODO').promiseAction();
-
-        this.put('meta', meta);
-
-        super.init();
-
-    }
-
-    click() {
-
-        const data = this.get('data');
-
-        this.event('todos://create').withData(data).emit();
-
-    }
-
-    change(data) {
-
-        console.log('change', data);
-
-        this.put('data', data);
-
-    }
-
-    static TEMPLATE2ss = (
-        <ui.Form
-            meta=':meta'
-            dataChanged=':change'
-        />
-    );
     static TEMPLATE = (
-        <div>
+        <article>
             <ui.Header caption='Todo List'/>
             <ui.Content>
-                <div class='col col-md-8'>
-                    <ui.List
-                        dataFrom='todos://list'
-                        dataDependsOn='todos://changed'
-                        itemClick=":itemClick"
-                    />
-                </div>
-                <div class='col col-md-4'>
-                    <ui.Form
-                        meta=':meta'
-                        dataChanged=':change'
-                    />
-                    <ui.Button
-                        caption='Create'
-                        click=':click'
-                    />
-                </div>
+                <ui.ContentRow>
+                    <div class='col col-md-8'>
+                        <ui.List
+                            dataFrom='todos://list'
+                            dataDependsOn='todos://changed'
+                            valueChanged=":itemClick"
+                        />
+                    </div>
+                    <div class='col col-md-4'>
+                        <NewTodo/>
+                    </div>
+                </ui.ContentRow>
             </ui.Content>
-        </div>
+        </article>
     );
 
+    itemClick(id){
+
+        this.log('itemClick',id);
+
+        this.event(`ui://navigate/todo/${id}`).action()
+    }
 }

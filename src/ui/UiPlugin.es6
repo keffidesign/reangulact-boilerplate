@@ -1,6 +1,6 @@
 import {Plugin} from 'applugins';
 import {bootstrap} from  './React.es6';
-import {bootstrapNg} from  './Angular.es6';
+//import {bootstrapNg} from  './Angular.es6';
 
 export default class UiPlugin extends Plugin {
 

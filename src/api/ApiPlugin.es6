@@ -1,34 +1,37 @@
 import {Plugin} from 'applugins';
 
-const LIST = [
-    {
-        id: '1',
-        name: 'Task #1'
-    }
-    ,
-    {
-        id: '2',
-        name: 'Task #2'
-    }
-];
-
 export default class ApiPlugin extends Plugin {
+
+    get(cb) {
+        return this.event('storage://get/todos').action((err, r)=>cb(err, (r || {}).list || []));
+    }
+
+    put(data, cb) {
+        return this.event('storage://set/todos').withData(data).action(cb)
+    }
 
     onApi_getList(ev, cb) {
 
-        setTimeout(() => cb(undefined, LIST), 1500);
+        this.get(cb);
     }
 
     onApi_get({path:[docId]}, cb) {
 
-        setTimeout(() => cb(undefined, LIST.find((d)=>d.id==docId)), 500);
+        this.get((err, list) => cb(err, list.find((d)=>d.id == docId)));
     }
 
-    onApi_create(ev, cb) {
+    onApi_create({data}, cb) {
 
-        const id = (+LIST[LIST.length - 1].id) + 1;
+        this.get((err, list) => {
 
-        setTimeout(() => cb(undefined, LIST.push({id, ...ev.data})), 500);
+            this.log('create', err, list);
+
+            const id = list.length + 1;
+
+            list.unshift({id, ...data});
+
+            this.put({list}, cb);
+        });
     }
 
 }
