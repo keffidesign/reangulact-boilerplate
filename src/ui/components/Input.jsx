@@ -2,12 +2,15 @@ import {Component} from 'reangulact';
 
 export default class UiInput extends Component {
 
-    change(e) {
+    change() {
 
-        const value = e.target.value;
+        return (ev)=> {
 
-        this.put('value', value);
+            const value = ev.target.value;
 
+            this.put('value', value);
+
+        }
     }
 
     static TEMPLATE = (
@@ -16,6 +19,6 @@ export default class UiInput extends Component {
             placeholder=':caption'
             value=':value'
             change=':change'
-            />
+        />
     );
 }

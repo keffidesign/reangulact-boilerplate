@@ -14,34 +14,38 @@ export default class TodoPage extends ui.Component {
 
     save() {
 
-        const data = this.get('data');
+        return ()=> {
 
-        this.event('todos://create').withData(data).emit();
+            const data = this.get('data');
 
+            this.event('todos://create').withData(data).emit();
+        }
     }
 
     change(data) {
 
-        console.log('change', data);
+        return ()=> {
 
-        this.put('data', data);
+            console.log('change', data);
 
+            this.put('data', data);
+        }
     }
 
     static TEMPLATE = (
         <div>
-            <ui.Header caption=':data.name'/>
+            <ui.Header caption=':(To-do (:data.name))'/>
             <ui.Content>
                 <div class='col col-md-12'>
                     <ui.Form
                         meta=':meta'
                         data=":data"
                         dataChanged=':change'
-                        />
+                    />
                     <ui.Button
                         caption='Save'
                         click=':save'
-                        />
+                    />
                 </div>
             </ui.Content>
         </div>

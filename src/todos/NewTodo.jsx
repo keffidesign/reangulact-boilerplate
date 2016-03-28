@@ -11,18 +11,29 @@ export default class NewTodo extends ui.Component {
 
     click() {
 
-        const data = this.get('data');
+        return ()=> {
 
-        this.event('todos://create').withData(data).emit();
+            const data = this.get('data');
 
+            this.event('todos://create').withData(data).emit();
+        }
     }
 
-    change(data) {
+    disabled() {
 
-        console.log('change', data);
+        const data = this.get('data');
+        this.log(data);
+        return !data || !data.name;
+    }
 
-        this.put('data', data);
+    change() {
 
+        return (data)=> {
+
+            console.log('change', data);
+
+            this.put('data', data);
+        }
     }
 
     static TEMPLATE = (
@@ -33,6 +44,7 @@ export default class NewTodo extends ui.Component {
             />
             <ui.Button
                 caption='Create'
+                disabled4=":disabled"
                 click=':click'
             />
         </div>

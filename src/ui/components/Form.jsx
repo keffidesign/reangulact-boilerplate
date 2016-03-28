@@ -3,7 +3,7 @@ import Fieldset from './Field.jsx';
 
 export default class UiForm extends DataComponent {
 
-    getChange() {
+    change() {
 
         const key = this.get('m.id');
 

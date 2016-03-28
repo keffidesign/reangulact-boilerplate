@@ -17,7 +17,8 @@ export default class TodosPlugin extends Plugin {
 
         return [
             {
-                id: 'todos',
+                id: '/',
+                isDefault: true,
                 component: TodosPage
             },
             {
@@ -25,7 +26,6 @@ export default class TodosPlugin extends Plugin {
                 component: TodoPage
             }
         ]
-
     }
 
     onTodos_list() {

@@ -7,26 +7,26 @@ export default class TodosPage extends ui.Component {
         <article>
             <ui.Header caption='Todo List'/>
             <ui.Content>
-                <ui.ContentRow>
-                    <div class='col col-md-8'>
+                <ui.Row>
+                    <ui.Col size='8'>
                         <ui.List
                             dataFrom='todos://list'
                             dataDependsOn='todos://changed'
                             valueChanged=":itemClick"
                         />
-                    </div>
-                    <div class='col col-md-4'>
+                    </ui.Col>
+                    <ui.Col size='4'>
                         <NewTodo/>
-                    </div>
-                </ui.ContentRow>
+                    </ui.Col>
+                </ui.Row>
             </ui.Content>
         </article>
     );
 
     itemClick(id){
 
-        this.log('itemClick',id);
-
-        this.event(`ui://navigate/todo/${id}`).action()
+        if (id) {
+            this.action(`ui://navigate/todo/${id}`);
+        }
     }
 }

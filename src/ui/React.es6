@@ -4,7 +4,6 @@ const {Router, hashHistory, browserHistory} = ReactRouter;//from 'react-router';
 
 import {initialize} from 'reangulact-r';
 
-//import ViewportPage from './ViewportPage.jsx';
 const getRoutes = (pages = [], parent = null) => pages.map(page => {
 
     var id = page.id;
@@ -27,12 +26,11 @@ const getRoutes = (pages = [], parent = null) => pages.map(page => {
 
 });
 
-
 const PAGES = {};
 
 const document = window.document;
 
-const rootComponent = 0;//ViewportPage;
+const rootComponent = 0;
 
 const rootRoute = {name: 'viewport', path: '/', component: rootComponent};
 
@@ -90,6 +88,3 @@ const createPage = (pageId) => {
     return page;
 
 };
-
-
-

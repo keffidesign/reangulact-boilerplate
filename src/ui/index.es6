@@ -5,7 +5,8 @@ export {DataComponent} from 'reangulact';
 export {default as Header} from './components/Header.jsx';
 
 export {default as Content} from './components/Content.jsx';
-export {default as ContentRow} from './components/ContentRow.jsx';
+export {default as Row} from './components/ContentRow.jsx';
+export {default as Col} from './components/ContentCol.jsx';
 
 export {default as List} from './components/List.jsx';
 
