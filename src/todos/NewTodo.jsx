@@ -17,7 +17,7 @@ export default class NewTodo extends ui.Component {
 
             <ui.Button
                 caption='Create'
-                disabled=":isDisabled"
+                disabled2=":isDisabled"
                 click=':createNew'
             />
 
@@ -52,6 +52,6 @@ export default class NewTodo extends ui.Component {
 
     changed(data) {
 
-        this.put('data', data);
+        this.update({data});
     }
 }

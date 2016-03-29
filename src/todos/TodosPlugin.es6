@@ -17,13 +17,15 @@ export default class TodosPlugin extends Plugin {
 
         return [
             {
-                id: '/',
+                id: 'todos',
+                path:'/',
                 isDefault: true,
                 component: TodosPage
             }
             ,
             {
-                id: 'todo/:docId',
+                id:'todo',
+                path: 'todo/:docId',
                 component: TodoPage
             }
         ]

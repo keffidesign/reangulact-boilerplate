@@ -21,9 +21,16 @@ export default class ApiPlugin extends Plugin {
 
             const doc = list.find((d)=>(d.id == docId));
 
-            this.log('doc', docId, err, list, doc);
+            if (!doc){
 
-            cb(err, doc);
+                cb(new Error(`404: Document not found: ${kind}:${docId}`));
+
+            } else{
+
+                cb(err, doc);
+            }
+
+
 
         });
     }

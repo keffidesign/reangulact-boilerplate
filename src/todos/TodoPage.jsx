@@ -6,7 +6,13 @@ export default class TodoPage extends ui.Component {
 
         const data = this.get('data');
 
-        this.event(['todos://update', {data}]).action();
+        this.event(['todos://update', {data}]).action((error)=> {
+
+            if (error) {
+                this.update({error});
+            }
+
+        });
     }
 
     getIsDisabled() {
@@ -16,10 +22,23 @@ export default class TodoPage extends ui.Component {
         return !data || !data.name;
     }
 
+    getDocId() {
+
+        const params = this.getRouteParams();
+
+        return params.docId;
+    }
+
     changed(data) {
 
         this.put('data', data);
     }
+
+    static TEMPLATE2 = ( <ui.Form
+        metaFrom='resource://get/TODO_FORM'
+        dataFrom=":(todos://doc/(:docId))"
+        dataChanged=':changed'
+    />);
 
     static TEMPLATE = (
 
@@ -30,12 +49,13 @@ export default class TodoPage extends ui.Component {
                     <ui.Col size='12'>
                         <ui.Form
                             metaFrom='resource://get/TODO_FORM'
-                            dataFrom=":(todos://doc/(:params.docId))"
+                            dataFrom=":(todos://doc/(:docId))"
                             dataChanged=':changed'
+                            error=":error"
                         />
                         <ui.Button
                             caption='Update'
-                            disabled=":isDisabled"
+                            disabled2=":isDisabled"
                             click=':doUpdate'
                         />
                     </ui.Col>
