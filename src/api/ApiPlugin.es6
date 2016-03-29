@@ -2,35 +2,61 @@ import {Plugin} from 'applugins';
 
 export default class ApiPlugin extends Plugin {
 
-    get(cb) {
-        return this.event('storage://get/todos').action((err, r)=>cb(err, (r || {}).list || []));
+    get(key, cb) {
+        return this.event(`storage://get/${key}`).action((err, r)=>cb(err, (r || {}).list || []));
     }
 
-    put(data, cb) {
-        return this.event('storage://set/todos').withData(data).action(cb)
+    put(key, data, cb) {
+        return this.event(`storage://set/${key}`).withData(data).action(cb)
     }
 
-    onApi_getList(ev, cb) {
+    onApi_list({path:[kind]}, cb) {
 
-        this.get(cb);
+        this.get(kind, cb);
     }
 
-    onApi_get({path:[docId]}, cb) {
+    onApi_doc({path:[kind, docId]}, cb) {
 
-        this.get((err, list) => cb(err, list.find((d)=>d.id == docId)));
+        this.get(kind, (err, list) => {
+
+            const doc = list.find((d)=>(d.id == docId));
+
+            this.log('doc', docId, err, list, doc);
+
+            cb(err, doc);
+
+        });
     }
 
-    onApi_create({data}, cb) {
+    onApi_upsert({data, path:[kind, docId]}, cb) {
 
-        this.get((err, list) => {
+        this.get(kind, (err, list) => {
 
-            this.log('create', err, list);
+            this.log('upsert', err, list, data);
 
-            const id = list.length + 1;
+            docId = data.id || docId;
 
-            list.unshift({id, ...data});
+            if (docId) {
 
-            this.put({list}, cb);
+                const doc = list.find((d)=>d.id == docId)
+                if (doc) {
+
+                    Object.assign(doc, data);
+
+                } else {
+
+                    list.unshift({id:docId, ...data});
+                }
+
+            } else {
+
+                const id = list.length+1;
+
+                list.unshift({id, ...data});
+            }
+
+
+            this.put(kind, {list}, cb);
         });
     }
 

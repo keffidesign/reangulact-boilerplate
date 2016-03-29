@@ -1,5 +1,6 @@
 import * as ui from '../ui';
 import NewTodo from './NewTodo.jsx';
+import Todos from './Todos.jsx';
 
 export default class TodosPage extends ui.Component {
 
@@ -9,7 +10,7 @@ export default class TodosPage extends ui.Component {
             <ui.Content>
                 <ui.Row>
                     <ui.Col size='8'>
-                        <ui.List
+                        <Todos
                             dataFrom='todos://list'
                             dataDependsOn='todos://changed'
                             valueChanged=":itemClick"

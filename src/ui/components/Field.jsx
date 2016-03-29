@@ -12,6 +12,7 @@ export default class UiField extends Component {
             <label if=':meta.caption'>:meta.caption</label>
             <Input
                 caption=':meta.caption'
+                value=":value"
                 valueChanged=':change'
                 />
             <small class='text-muted' if=':meta.note'>:meta.note</small>

@@ -2,51 +2,44 @@ import * as ui from '../ui';
 
 export default class TodoPage extends ui.Component {
 
-    async init() {
+    doUpdate() {
 
-        const meta = await this.event('resource://get/CREATE_TODO').promiseAction();
+        const data = this.get('data');
 
-        this.put('meta', meta);
-
-        super.init();
-
+        this.action(['todos://update', {data}]);
     }
 
-    save() {
+    getIsDisabled() {
 
-        return ()=> {
+        const data = this.get('data');
 
-            const data = this.get('data');
-
-            this.event('todos://create').withData(data).emit();
-        }
+        return !data || !data.name;
     }
 
-    change(data) {
+    changed(data) {
 
-        return ()=> {
-
-            console.log('change', data);
-
-            this.put('data', data);
-        }
+        this.put('data', data);
     }
 
     static TEMPLATE = (
+
         <div>
-            <ui.Header caption=':(To-do (:data.name))'/>
+            <ui.Header caption='Todo'/>
             <ui.Content>
-                <div class='col col-md-12'>
-                    <ui.Form
-                        meta=':meta'
-                        data=":data"
-                        dataChanged=':change'
-                    />
-                    <ui.Button
-                        caption='Save'
-                        click=':save'
-                    />
-                </div>
+                <ui.Row>
+                    <ui.Col size='12'>
+                        <ui.Form
+                            metaFrom='resource://get/TODO_FORM'
+                            dataFrom=":(todos://doc/(:params.docId))"
+                            dataChanged=':changed'
+                        />
+                        <ui.Button
+                            caption='Update'
+                            disabled=":isDisabled"
+                            click=':doUpdate'
+                        />
+                    </ui.Col>
+                </ui.Row>
             </ui.Content>
         </div>
     );

@@ -32,7 +32,7 @@ const document = window.document;
 
 const rootComponent = 0;
 
-const rootRoute = {name: 'viewport', path: '/', component: rootComponent};
+const rootRoute = {name: 'viewport', path: '/', component: 0};
 
 rootRoute.childRoutes = getRoutes([], rootRoute);
 
@@ -43,6 +43,8 @@ function registerPage ({id, path, component, isDefault}){
     PAGES[id] = component;
 
     if (isDefault || path === "/") {
+
+        //rootRoute.component = component;
 
         rootRoute.indexRoute = {component};
 
@@ -84,6 +86,10 @@ const createPage = (pageId) => {
     page.contextTypes = {
         router: React.PropTypes.func
     };
+
+    page.prototype.getRouterParam = function(key){
+        this.router.getParam(key);
+    }
 
     return page;
 

@@ -7,10 +7,9 @@ export default class TodosPlugin extends Plugin {
 
     init() {
 
-        this.event('resource://add').withData(Resources).action();
+        this.addResources(Resources);
 
         super.init();
-
     }
 
     onUi_registerPages() {
@@ -20,7 +19,8 @@ export default class TodosPlugin extends Plugin {
                 id: '/',
                 isDefault: true,
                 component: TodosPage
-            },
+            }
+            ,
             {
                 id: 'todo/:docId',
                 component: TodoPage
@@ -28,22 +28,41 @@ export default class TodosPlugin extends Plugin {
         ]
     }
 
-    onTodos_list() {
+    onTodos_list(ev, cb) {
 
-        return this.event('api://getList').promise();
-
+        this.event('api://list/todos').action(cb);
     }
 
-    onTodos_get(ev) {
+    onTodos_doc({path:[docId]}, cb) {
 
-        return this.event(`'api://get/${ev.docId}`).promise();
-
+        this.event(`api://doc/todos/${docId}`).action(cb);
     }
 
-    onTodos_create({data}) {
+    onTodos_update({data}, cb) {
 
-        this.event('api://create/todos').withData(data).emit(() => this.event('todos://changed').emit());
+        const now = Date.now();
 
+        data = {...data, updatedAt: now.toString()};
+
+        this.event(['api://upsert/todos',{data}]).action((err) => {
+
+            this.event('todos://changed').emit();
+
+            cb(err);
+        });
     }
 
+    onTodos_create({data}, cb) {
+
+        const now = Date.now();
+
+        data = {...data, status:'todo', createdAt: now.toString()};
+
+        this.event(['api://upsert/todos',{data}]).action((err) => {
+
+            this.event('todos://changed').emit();
+
+            cb(err);
+        });
+    }
 }
