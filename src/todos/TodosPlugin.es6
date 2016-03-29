@@ -3,6 +3,7 @@ import Resources from './Resources.es6';
 import TodosPage from './TodosPage.jsx';
 import TodoPage from './TodoPage.jsx';
 
+let err=null;
 export default class TodosPlugin extends Plugin {
 
     init() {
@@ -58,10 +59,16 @@ export default class TodosPlugin extends Plugin {
 
         data = {...data, status:'todo', createdAt: now.toString()};
 
-        this.event(['api://upsert/todos',{data}]).action((err) => {
+        this.event(['api://upsert/todos',{data}]).action((err2) => {
 
             this.event('todos://changed').emit();
 
+            if (err){
+
+                err=null
+            }else {
+                err=new Error('35345345')
+            }
             cb(err);
         });
     }

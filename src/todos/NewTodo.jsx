@@ -6,11 +6,16 @@ export default class NewTodo extends ui.Component {
 
         const data = this.get('data');
 
-        this.action(['todos://create',{data}], (err)=>{
-            if (err){
-                this.log(err);
+        this.update({error: null});
+
+        this.action(['todos://create', {data}], (error)=> {
+
+            if (error) {
+                this.update({error});
+            } else {
+                this.put('data', {name: ''});
             }
-            this.put('data',{name:''});
+
         });
     }
 
@@ -26,8 +31,8 @@ export default class NewTodo extends ui.Component {
         this.put('data', data);
     }
 
-    static DEFAULTS={
-        data:{}
+    static DEFAULTS = {
+        data: {}
     }
 
     static TEMPLATE = (
@@ -44,6 +49,8 @@ export default class NewTodo extends ui.Component {
                 disabled=":isDisabled"
                 click=':doCreateNew'
             />
+
+            <div if=":error" class="alert alert-danger">:(Error: (:error.message))</div>
         </div>
     );
 
