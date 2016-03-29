@@ -10,17 +10,14 @@ export default class UiForm extends DataComponent {
         const metaFrom = this.get('metaFrom');
         if (metaFrom) {
 
-            this.action(metaFrom, (err, meta)=>{
-                if (err){
+            this.event(metaFrom).action((error, meta)=> {
 
-                    this.log(err);
-                }
-                this.put('meta', meta);
+                this.update({error, meta});
             });
         }
     }
 
-    getFieldInitialValue() {
+    getFieldValue() {
 
         const key = this.get('m.id');
         const data = this.get('data');
@@ -43,12 +40,16 @@ export default class UiForm extends DataComponent {
 
     static TEMPLATE = (
         <form>
+
             <Field
                 each='m of :meta'
                 meta=':m'
-                value=":fieldInitialValue"
+                value=":fieldValue"
                 valueChanged=':fieldChanged'
             />
+
+            <div if=":error" class="alert alert-danger">:(Error: (:error.message))</div>
+
         </form>
     );
 }

@@ -6,7 +6,7 @@ export default class TodoPage extends ui.Component {
 
         const data = this.get('data');
 
-        this.action(['todos://update', {data}]);
+        this.event(['todos://update', {data}]).action();
     }
 
     getIsDisabled() {

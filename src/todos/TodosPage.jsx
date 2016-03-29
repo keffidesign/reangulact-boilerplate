@@ -27,7 +27,7 @@ export default class TodosPage extends ui.Component {
     itemClick(id){
 
         if (id) {
-            this.action(`ui://navigate/todo/${id}`);
+            this.event(`ui://navigate/todo/${id}`).action();
         }
     }
 }
