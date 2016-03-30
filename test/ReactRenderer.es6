@@ -11,7 +11,13 @@ function stringifyComponentProps(props) {
         let value = props[k];
 
         if (typeof value === 'function') {
+
             value = "[FN]"
+
+        } else if (typeof value === 'object') {
+
+            value = JSON.stringify(value).replace(/"/g,"'")
+
         }
 
         return `${k}="${value}"`;

@@ -34,12 +34,6 @@ export default class TodoPage extends ui.Component {
         this.put('data', data);
     }
 
-    static TEMPLATE2 = ( <ui.Form
-        metaFrom='resource://get/TODO_FORM'
-        dataFrom=":(todos://doc/(:docId))"
-        dataChanged=':changed'
-    />);
-
     static TEMPLATE = (
 
         <div>
@@ -55,7 +49,7 @@ export default class TodoPage extends ui.Component {
                         />
                         <ui.Button
                             caption='Update'
-                            disabled2=":isDisabled"
+                            disabled=":isDisabled"
                             click=':doUpdate'
                         />
                     </ui.Col>
@@ -63,5 +57,4 @@ export default class TodoPage extends ui.Component {
             </ui.Content>
         </div>
     );
-
 }

@@ -1,5 +1,5 @@
 import {Component} from 'reangulact';
-import PlatformToggler from './PlatformToggler.jsx';
+import PlatformToggler from './../../components/PlatformToggler.jsx';
 
 export default class UiHeader extends Component {
 

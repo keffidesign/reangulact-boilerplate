@@ -17,7 +17,7 @@ export default class NewTodo extends ui.Component {
 
             <ui.Button
                 caption='Create'
-                disabled2=":isDisabled"
+                disabled=":isDisabled"
                 click=':createNew'
             />
 

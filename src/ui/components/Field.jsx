@@ -1,5 +1,5 @@
 import {Component} from 'reangulact';
-import Input from './Input.jsx';
+import Input from './../../components/Input.jsx';
 
 export default class UiField extends Component {
 

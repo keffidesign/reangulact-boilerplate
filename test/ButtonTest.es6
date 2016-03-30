@@ -11,7 +11,7 @@ const sourceSample =`
 export default {
     type: Button,
     ngResult:`
-    <button [ngClass]="'btn btn-'+get('mode')+''" [attr.disabled]="get('disabled')" (click)="getClicker('click')($event)">
+    <button [ngClass]="'btn btn-'+get('mode')+''" [disabled]="get('disabled')" (click)="getClicker('click')($event)">
         <i *ngIf="get('icon')" [ngClass]="'fa fa-'+get('icon')+''"></i>
         <template [ngIf]="get('caption')">{{get('caption')}}</template>
         <ng-content></ng-content>
@@ -21,7 +21,7 @@ export default {
         {
             id: 'empty',
             props: {},
-            result: `<button className="btn btn-primary"></button>`,
+            result: `<button className="btn btn-primary" onClick="[FN]"></button>`,
         },
         ((p)=>({
             id: 'all props',

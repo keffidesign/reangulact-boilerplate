@@ -2,20 +2,20 @@ import {Component} from 'reangulact';
 
 export default class UiInput extends Component {
 
-    change(e) {
+    static TEMPLATE = (
+        <input
+            class='form-control'
+            placeholder=':placeholder'
+            value=':value'
+            change=':change'
+        />
+    );
 
-        const value = e.target.value;
+    change(ev) {
+
+        const value = ev.target.value;
 
         this.put('value', value);
 
     }
-
-    static TEMPLATE = (
-        <input
-            class='form-control'
-            placeholder=':caption'
-            value=':value'
-            change=':change'
-            />
-    );
 }
