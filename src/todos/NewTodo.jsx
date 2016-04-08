@@ -1,4 +1,4 @@
-import * as ui from '../ui';
+import * as ui from '../components';
 
 export default class NewTodo extends ui.Component {
 

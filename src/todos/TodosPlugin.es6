@@ -18,8 +18,7 @@ export default class TodosPlugin extends Plugin {
         return [
             {
                 id: 'todos',
-                path:'/',
-                isDefault: true,
+                path:'/todos',
                 component: TodosPage
             }
             ,

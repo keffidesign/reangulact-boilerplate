@@ -1,4 +1,4 @@
-import * as ui from '../ui';
+import * as ui from '../components';
 
 export default class TodoPage extends ui.Component {
 

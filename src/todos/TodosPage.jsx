@@ -1,4 +1,4 @@
-import * as ui from '../ui';
+import * as ui from '../components';
 import NewTodo from './NewTodo.jsx';
 import Todos from './Todos.jsx';
 
