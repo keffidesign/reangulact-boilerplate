@@ -3,9 +3,8 @@ import {bootstrap} from  './React.es6';
 import {bootstrapNg} from  './Angular.es6';
 
 function bootstrapFactory() {
-    const platformId = localStorage.getItem('platform') || 'react';
 
-    return platformId === 'react'? bootstrap : bootstrapNg;
+    return localStorage.getItem('platform') === 'angular' ? bootstrapNg : bootstrap;
 }
 export default class UiPlugin extends Plugin {
 
