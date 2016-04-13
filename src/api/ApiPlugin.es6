@@ -7,7 +7,7 @@ export default class ApiPlugin extends Plugin {
     }
 
     put(key, data, cb) {
-        return this.event(`storage://set/${key}`).withData(data).action(cb)
+        return this.event([`storage://set/${key}`,{data}]).action(cb)
     }
 
     onApi_list({path:[kind]}, cb) {
